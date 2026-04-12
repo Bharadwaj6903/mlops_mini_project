@@ -37,18 +37,33 @@ class TestModelLoading(unittest.TestCase):
        # cls.new_model_uri = f'models:/{cls.new_model_name}/{cls.new_model_version}'
         #cls.new_model = mlflow.pyfunc.load_model(cls.new_model_uri)
 
+
+
         client = mlflow.MlflowClient()
+        # Get all versions
+        versions = client.search_model_versions(f"name='{cls.new_model_name}'")
+
+        if not versions:
+            raise ValueError("No model versions found")
 
         # Get latest version
-        versions = client.search_model_versions(f"name='{cls.new_model_name}'")
         latest_version = max(versions, key=lambda v: int(v.version))
 
-        # Get run_id
+        # Extract run_id
         run_id = latest_version.run_id
 
-        # Construct direct artifact path (no registry API call)
+        if not run_id:
+            raise ValueError("Run ID is missing for latest model version")
+        
+        print("Run ID:", run_id)
+      
+
+        # Correct artifact URI
         artifact_uri = f"runs:/{run_id}/model"
 
+        print("Using artifact URI:", artifact_uri)
+
+        # Load model
         cls.new_model = mlflow.pyfunc.load_model(artifact_uri)
 
         # Load vectorizer

@@ -2,4 +2,3 @@
     remote = myremote
 ['remote "myremote"']
     url = s3://mlopsminibucket5146
-    region = eu-north-1

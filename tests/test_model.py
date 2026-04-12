@@ -28,6 +28,8 @@ class TestModelLoading(unittest.TestCase):
 
         # 🔥 Get latest model version OBJECT
         client = mlflow.MlflowClient()
+       
+
         versions = client.search_model_versions(f"name='{cls.new_model_name}'")
 
         if not versions:
@@ -35,18 +37,16 @@ class TestModelLoading(unittest.TestCase):
 
         latest_version = max(versions, key=lambda v: int(v.version))
 
-        run_id = latest_version.run_id
-        if not run_id:
-            raise ValueError("Run ID missing")
+        # 🔥 Use source instead of run_id
+        model_source = latest_version.source
 
-        # ✅ IMPORTANT: correct artifact path
-        artifact_uri = f"runs:/{run_id}/model"
+        if not model_source:
+            raise ValueError("Model source missing")
 
-        print("Run ID:", run_id)
-        print("Artifact URI:", artifact_uri)
+        print("Model Source:", model_source)
 
-        # ✅ Load model (no registry call)
-        cls.new_model = mlflow.pyfunc.load_model(artifact_uri)
+        # ✅ Load model directly
+        cls.new_model = mlflow.pyfunc.load_model(model_source)
 
         # Load vectorizer
         cls.vectorizer = pickle.load(open('models/vectorizer.pkl', 'rb'))

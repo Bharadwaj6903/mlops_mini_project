@@ -104,7 +104,12 @@ model_uri =f'mlflow-artifacts:/2a9a88df240b421ab2ced1d2cab17ae4/models/m-f5c8bd8
 model = mlflow.pyfunc.load_model(model_uri)
 
 
-vectorizer = pickle.load(open(os.path.join(os.getcwd(), 'vectorizer.pkl'), 'rb'))
+#vectorizer = pickle.load(open(os.path.join(os.getcwd(), 'vectorizer.pkl'), 'rb'))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+vectorizer_path = os.path.join(BASE_DIR, '..', 'models', 'vectorizer.pkl')
+
+vectorizer = pickle.load(open(vectorizer_path, 'rb'))
 
 @app.route('/')
 def home():

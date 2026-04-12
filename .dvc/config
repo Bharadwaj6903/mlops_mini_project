@@ -1,4 +1,5 @@
 [core]
     remote = myremote
 ['remote "myremote"']
-    url = https://mlopsminibucket5146.s3.eu-north-1.amazonaws.com
+    url = s3://mlopsminibucket5146
+    region = eu-north-1

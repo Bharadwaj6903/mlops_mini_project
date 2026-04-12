@@ -1,4 +1,4 @@
 [core]
     remote = myremote
 ['remote "myremote"']
-    url = C:\Users\BHARAD~1\AppData\Local\Temp
+    url = https://mlopsminibucket5146.s3.eu-north-1.amazonaws.com
